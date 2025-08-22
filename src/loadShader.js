@@ -235,7 +235,7 @@ function minifyShader (shader, newLine = false) {
  * @returns {string} Shader's source code without external chunks
  */
 function loadChunks (source, path, options) {
-  const { importKeyword, warnDuplicatedImports, removeDuplicatedImports } = options;
+  const { importKeyword, warnDuplicatedImports, removeDuplicatedImports, alias } = options;
   const pattern = new RegExp(String.raw`${importKeyword}(\s+([^\s<>]+));?`, 'gi');
   const unixPath = path.split(sep).join(posix.sep);
 
@@ -259,6 +259,7 @@ function loadChunks (source, path, options) {
     dependentChunks.set(unixPath, []);
     const currentDirectory = directory;
     const ext = options.defaultExtension;
+    const aliasPaths = Object.keys(alias ?? {});
 
     source = source.replace(pattern, (_, chunkPath) => {
       chunkPath = chunkPath.trim().replace(/^(?:"|')?|(?:"|')?;?$/gi, '');
@@ -266,6 +267,13 @@ function loadChunks (source, path, options) {
       if (!chunkPath.indexOf('/')) {
         const base = cwd().split(sep).join(posix.sep);
         chunkPath = base + options.root + chunkPath;
+      }
+
+      const matchingAliasPath = aliasPaths.find((value) => chunkPath.startsWith(value));
+
+      if (matchingAliasPath) {
+        const resolvedPath = alias[matchingAliasPath];
+        chunkPath = chunkPath.replace(new RegExp(matchingAliasPath), resolvedPath);
       }
 
       const directoryIndex = chunkPath.lastIndexOf('/');

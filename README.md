@@ -68,7 +68,8 @@ glsl({
   importKeyword: '#include',      // Keyword used to import shader chunks
   minify: false,                  // Minify/optimize output shader code
   watch: true,                    // Recompile shader on change
-  root: '/'                       // Directory for root imports
+  root: '/',                      // Directory for root imports
+  alias: undefined                // Custom aliases for importing shader chunks
 })
 ```
 

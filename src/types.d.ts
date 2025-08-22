@@ -4,6 +4,9 @@ export type GlobPattern = string | string[];
 /** @typedef {string | string[]} Callback */
 type Callback = (shader: string) => string;
 
+/** @typedef {Record<string, string>} Alias */
+type Alias = Record<string, string>;
+
 /**
  * @default false
  * @typedef {boolean | Callback | Promise<Callback>} Minify
@@ -27,14 +30,16 @@ type Minify = boolean | Callback | Promise<Callback>;
  * @property {string}  importKeyword           Keyword used to import shader chunks
  * @property {Minify}  minify                  Minify output shader code
  * @property {string}  root                    Directory for root imports
+ * @property {Alias}   alias                   Alias mappings for importing shader chunks
  */
 export type LoadingOptions = {
+  defaultExtension: string;
   warnDuplicatedImports: boolean;
   removeDuplicatedImports: boolean;
-  defaultExtension: string;
   importKeyword: string;
   minify: Minify;
   root: string;
+  alias?: Alias;
 };
 
 /**
@@ -54,6 +59,7 @@ export type LoadingOptions = {
  *     '**\/*.vs', '**\/*.fs'
  *   ]),
  *   exclude: undefined,
+ *   alias: undefined,
  *   defaultExtension: 'glsl',
  *   warnDuplicatedImports: true,
  *   removeDuplicatedImports: false,

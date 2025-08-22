@@ -30,6 +30,7 @@ export default function ({
       '**/*.vs', '**/*.fs'
     ]),
     exclude = undefined,
+    alias = undefined,
     defaultExtension = 'glsl',
     warnDuplicatedImports = true,
     removeDuplicatedImports = false,
@@ -59,7 +60,9 @@ export default function ({
         warnDuplicatedImports,
         defaultExtension,
         importKeyword,
-        minify, root
+        minify,
+        root,
+        alias
       });
 
       watch && !prod && Array.from(dependentChunks.values())

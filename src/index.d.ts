@@ -16,7 +16,7 @@ export type { PluginOptions };
  * @returns {Plugin} Vite plugin that converts shader code
  */
 export default function ({
-  include, exclude,
+  include, exclude, alias,
   defaultExtension,
   warnDuplicatedImports,
   removeDuplicatedImports,
